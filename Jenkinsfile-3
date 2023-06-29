@@ -1,7 +1,7 @@
 pipeline {
   agent { label 'slave-01' }
   environment {
-   ANSIBLE_PRIVATE_KEY=credentials('ssh-ansible') 
+   ANSIBLE_PRIVATE_KEY=credentials('docker-server') 
   }
   stages {
     stage('Hello') {
