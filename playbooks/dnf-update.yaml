@@ -1,6 +1,6 @@
 ---
 - name: Update system using DNF
-  hosts: web
+  hosts: slave-01
   become: true
 
   tasks:
