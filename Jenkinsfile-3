@@ -1,13 +1,13 @@
 pipeline {
   agent { label 'slave-01' }
   environment {
-   ANSIBLE_PRIVATE_KEY=credentials('docker-server') 
+   ANSIBLE_PRIVATE_KEY=credentials('ssh_slave-02') 
   }
   stages {
     stage('Hello') {
       steps {
         sh 'ansible-galaxy collection install -r requirements.yml'
-        sh 'ansible-playbook -i inventory/slave.hosts --private-key=$ANSIBLE_PRIVATE_KEY playbooks/dnf-update.yaml'
+        sh 'ansible-playbook -i inventory/slave.hosts --private-key=$ANSIBLE_PRIVATE_KEY playbooks/docker.yaml'
       }
     }
   }

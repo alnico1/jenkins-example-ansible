@@ -1,7 +1,7 @@
 ---
 - name: Install docker
   gather_facts: No
-  hosts: web2
+  hosts: web1
 
   tasks:
     - name: Install yum utils
