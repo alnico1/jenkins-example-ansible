@@ -1,3 +1,11 @@
+def GIT_NAME = "${env.gitlabSourceRepoName}".toLowerCase();
+def GIT_BRANCH = "${env.gitlabTargetBranch}";
+def SC_DNS = ".scapp.work"
+def URL = "http://${GIT_NAME}-${GIT_BRANCH}${SC_DNS}";
+def port = 0;
+def REPO_NAME = "registry.scapp.work/${GIT_NAME}:${GIT_BRANCH}";
+def TAG = "${GIT_NAME}-${GIT_BRANCH}";
+
 pipeline {
   agent { label 'slave-01' }
   environment {
