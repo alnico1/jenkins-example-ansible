@@ -1,0 +1,32 @@
+pipeline {
+  agent { label 'slave-01' }
+  environment {
+   ANSIBLE_PRIVATE_KEY=credentials('ssh_slave-02') 
+  }
+  stages {
+      stage('Checkout') {
+           agent {label 'slave-01'} 
+            steps {
+                script {
+                try{
+                checkout changelog: true, poll: true, scm: [
+                $class: 'GitSCM',
+                branches: [[name: "origin/${GIT_BRANCH}"]],
+                userRemoteConfigs: [[name: 'origin', url: env.gitlabSourceRepoHttpUrl, credentialsId: 'gitlab-userpass']]
+            ]
+            }
+                    catch(Exception e){
+                        notify("${e.getMessage()}");
+                        throw e;
+                    }
+        }
+            }
+        }
+    stage('Execute Playbook') {
+      steps {
+        sh 'ansible-galaxy collection install -r requirements.yml'
+        sh 'ansible-playbook -i inventory/slave.hosts --private-key=$ANSIBLE_PRIVATE_KEY playbooks/docker.yaml'
+      }
+    }
+  }
+}
